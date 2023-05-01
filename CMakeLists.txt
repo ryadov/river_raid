@@ -7,7 +7,7 @@ FetchContent_Declare(SFML
         GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(river_raid main.cpp Character.cpp Character.hpp Sprites.cpp Sprites.hpp Collidable.cpp Collidable.hpp)
+add_executable(river_raid main.cpp Character.cpp Character.hpp Sprites.cpp Sprites.hpp Collidable.cpp Collidable.hpp LeaderBoard.cpp)
 target_link_libraries(river_raid PRIVATE sfml-graphics)
 target_compile_features(river_raid PRIVATE cxx_std_17)
 if (WIN32 AND BUILD_SHARED_LIBS)
