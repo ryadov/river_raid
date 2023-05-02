@@ -21,13 +21,16 @@ class Character: public Collidable {
 protected:
     Sprite m_shape;
     State m_killed {alive};
+    int m_score {};
+
 
 public:
     Character( ) : Collidable(m_shape.getPosition().x, m_shape.getPosition().y, m_shape.getLocalBounds().width, m_shape.getLocalBounds().height), m_shape(pick_shape(Shapes::empty)) {
 
         m_killed = killed ;
     }
-    Character(Sprite shape ) : Collidable(shape.getPosition().x, shape.getPosition().y, shape.getLocalBounds().width, shape.getLocalBounds().height), m_shape(shape) {}
+    Character(Sprite shape ) : Collidable(shape.getPosition().x, shape.getPosition().y, shape.getLocalBounds().width, shape.getLocalBounds().height), m_shape(shape) {
+    }
     ~Character() ;
 
     Sprite  draw() ;

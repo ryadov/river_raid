@@ -53,3 +53,4 @@ void Character::move(float xOff, float yOff){
 void Character::setOrigin(float x, float y){
     m_shape.setOrigin(x, y);
 }
+

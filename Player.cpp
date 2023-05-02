@@ -10,3 +10,11 @@ Sprite Player::shoot() {
     shot.setPos(x+w/2 - shot.getWidth()/2,y);
     return shot.draw();
 }
+
+void  Player::refueling() {
+    fuel_amount += 1 ;
+}
+
+void Player::defueling(float speed) {
+    fuel_amount -= speed;
+}

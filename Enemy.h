@@ -47,6 +47,7 @@ public:
                 m_speed = 0 ;
                 break;
         }
+        m_score = setScore(static_cast<Shapes>(enemy));
 
     }
 

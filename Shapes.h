@@ -67,5 +67,7 @@ sf::Sprite  pick_score (Shapes shape) ;
 
 sf::Sprite  pick_exp (Shapes shape) ;
 
+int setScore(Shapes shape) ;
+
 
 #endif //TEST_SHAPES_H
