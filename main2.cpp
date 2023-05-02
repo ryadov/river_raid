@@ -4,6 +4,8 @@
 #include "Character.hpp"
 #include "Player.h"
 #include "Enemy.h"
+#include "Fuel.h"
+
 
 #include <cstdlib>
 #include <iostream>

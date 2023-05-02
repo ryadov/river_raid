@@ -10,9 +10,12 @@ class Fuel : public Character  {
 protected:
 
 public:
-    Fuel(): Character(pick_shape(fuel)) {
+    Fuel() {}  // to  spawn empty object  ,used for killing
+    Fuel(int): Character(pick_shape(fuel)) {
         m_score = setScore(fuel);
     }
+
+    void move_d ();
 };
 
 

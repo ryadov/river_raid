@@ -3,3 +3,7 @@
 //
 
 #include "Fuel.h"
+
+void Fuel::move_d(){
+    move(0,1);
+}

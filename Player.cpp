@@ -13,6 +13,7 @@ Sprite Player::shoot() {
 
 void  Player::refueling() {
     fuel_amount += 1 ;
+    setSpeed(1);
 }
 
 void Player::defueling(float speed) {
