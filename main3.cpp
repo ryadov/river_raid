@@ -43,6 +43,7 @@ int main() {
                     shoot_botton = true;
                     if (shot_c >= shots_nbr) shot_c = 0;
                     shots[shot_c] = pl.shoot();
+                    cout << "shooted\n" ;
                     ++shot_c;
 
                 }
@@ -89,16 +90,16 @@ int main() {
 
         animate_delete();
 
-        /*
+
         // until we fix the deleteing of objects issue
         //this algorithem doesnt work for now
         static int spawn_rate{0};
-        if (spawn_rate > 1000) {
+        if (spawn_rate > 1) {
             respawn_objects();
             spawn_rate = 0 ;
         }
         ++spawn_rate ;
-        */
+
     }
 
     return 0;

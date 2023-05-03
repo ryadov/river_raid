@@ -28,7 +28,7 @@ public:
     };
 public:
     Enemy()  {
-        m_killed = killed ;
+
     }
     Enemy(e_Enemy enemy) : Character(pick_shape(static_cast<Shapes>(enemy))) {
 

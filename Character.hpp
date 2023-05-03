@@ -15,6 +15,7 @@ enum State {
     alive,
     explode,
     killed,
+    deleted,
 };
 
 class Character: public Collidable {
@@ -27,9 +28,9 @@ protected:
 public:
     Character( ) : Collidable(m_shape.getPosition().x, m_shape.getPosition().y, m_shape.getLocalBounds().width, m_shape.getLocalBounds().height), m_shape(pick_shape(Shapes::empty)) {
 
-        m_killed = killed ;
+    m_killed = deleted;
     }
-    Character(Sprite shape ) : Collidable(shape.getPosition().x, shape.getPosition().y, shape.getLocalBounds().width, shape.getLocalBounds().height), m_shape(shape) {
+    Character(Sprite shape ) : Collidable(shape.getPosition().x, shape.getPosition().y, shape.getLocalBounds().width, shape.getLocalBounds().height), m_shape(shape) , m_killed{alive} {
     }
     ~Character() ;
 

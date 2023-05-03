@@ -20,11 +20,13 @@ void init_objects() {
         enemys[i].setPos(x,y);
         if (pl.isColliding(enemys[i])) {
             enemys[i] = Enemy();
+            cout << "object misplaced\n";
             --i ;
         }
         for(int j{0} ; j < i;j++) {
             if (enemys[i].getPos().y - enemys[j].getPos().y <= 20 && enemys[i].getPos().y - enemys[j].getPos().y >= -20 ) {
                 enemys[i] = Enemy();
+                cout << "object misplaced\n";
                 --i ;
                 break;
             }
@@ -34,24 +36,35 @@ void init_objects() {
     // bullets initilization
     //Character shots[shots_nbr] {};
     for(int i{0} ; i < shots_nbr;i++){
-        shots[i] = Character(pick_shape(empty));
+        shots[i] = Character(pick_shape(Shapes::empty));
     }
 
     // fuel tank initilization
     //Fuel fuels[fuel_nbr] {};
     for(int i{0} ; i < fuel_nbr;i++){
-
+        fuels[i] = Fuel(1); // spawns fuel
+        float x = static_cast<float >(rand()% 1024) ;  //change depending on frame size or spawning window
+        float y = static_cast<float >(rand()% 1024) ;  //change depending on frame size or spawning window
+        fuels[i].setPos(x,y);
+        for(int j{0} ; j < i;j++) {
+            if (fuels[i].getPos().y - fuels[j].getPos().y <= 20 && fuels[i].getPos().y - fuels[j].getPos().y >= -20 ) {
+                fuels[i] = Fuel();  //kills fuel
+                --i ;
+                break;
+            }
+        }
     }
 }
 
 void move_objects() {
     for (int i{0}; i < enemy_nbr ; i++){
-        if (enemys[i].getState() == explode || enemys[i].getState() == killed ){
+        if (enemys[i].getState() == explode || enemys[i].getState() == killed || enemys[i].getState() == deleted  ){
             continue;
         }
         enemys[i].move_lr();
     }
     for (int i{0}; i < shots_nbr ; i++){
+        if(shots[i].getState() == deleted) continue;
         shots[i].move(0,-2);
     }
 }
@@ -67,7 +80,7 @@ void move_objects_down() {
 
 void kill_objects() {
     for (int i{0}; i < enemy_nbr ; i++) {
-        if (enemys[i].getState() == explode || enemys[i].getState() == killed ){
+        if (enemys[i].getState() == explode || enemys[i].getState() == killed || enemys[i].getState() == deleted ){
             continue;
         }
         if (pl.isColliding(enemys[i])) {
@@ -76,20 +89,20 @@ void kill_objects() {
         }
     }
     for (int i{0}; i < enemy_nbr ; i++) {
-        if (enemys[i].getState() == explode || enemys[i].getState() == killed ){
+        if (enemys[i].getState() == explode || enemys[i].getState() == killed  || enemys[i].getState() == deleted){
             continue;
         }
-        for (int j{0}; j < 100; j++)
+        for (int j{0}; j < shots_nbr; j++)
             if (shots[j].isColliding(enemys[i])) {
                 shots[j] = Character();
                 enemys[i].kill(pick_exp(exp1));
             }
     }
     for (int i{0}; i < fuel_nbr ; i++) {
-        if (fuels[i].getState() == explode || fuels[i].getState() == killed ){
+        if (fuels[i].getState() == explode || fuels[i].getState() == killed || fuels[i].getState() == deleted ){
             continue;
         }
-        for (int j{0}; j < 100; j++)
+        for (int j{0}; j < shots_nbr; j++)
             if (shots[j].isColliding(fuels[i])) {
                 shots[j] = Character();
                 fuels[i].kill(pick_exp(exp2));
@@ -103,12 +116,19 @@ void animate_delete() {
     static int  animation_c2 = 0 ;
     if (animation_c2 > 10) {
         for (int i{0}; i < enemy_nbr ; i++){
-            if (enemys[i].getState() == killed ) enemys[i]=Enemy()   ;
+            if (enemys[i].getState() == killed ) {
+                enemys[i]=Enemy() ;
+                cout << i << " enemy killed\n";
+            }
 
         }
 
         for (int i{0}; i < fuel_nbr ; i++){
-            if (fuels[i].getState() == killed ) fuels[i]=Fuel()   ;
+            if (fuels[i].getState() == killed ) {
+                fuels[i]=Fuel()   ;
+                cout << i <<" fuel killed\n";
+
+            }
 
         }
         animation_c2 = 0 ;
@@ -155,7 +175,7 @@ void kill_objects_outsideFrame(){
 
 void respawn_objects(){
     for (int i{0}; i < enemy_nbr; i++) {
-        if (enemys[i].getState() == killed) {
+        if (enemys[i].getState() == deleted) {
             //choose random enemy shape which are given the values between 5 to 9
             Enemy::e_Enemy enm = static_cast<Enemy::e_Enemy>(rand()%5+5);
 
@@ -163,9 +183,9 @@ void respawn_objects(){
             float x = static_cast<float >(rand()% 1024) ;  // change depending on frame size or spawning window
 
             enemys[i].setPos(x,0 - enemys[i].getHeight());
-
+            break;
             for(int j{0} ; j < i;j++) {
-                if (enemys[i].getPos().y - enemys[j].getPos().y <= 20 && enemys[i].getPos().y - enemys[j].getPos().y >= -20 ) {
+                if (enemys[i].getPos().y - enemys[j].getPos().y <= 1 && enemys[i].getPos().y - enemys[j].getPos().y >= -1 ) {
                     enemys[i] = Enemy();
                     --i ;
                     break;
@@ -174,11 +194,12 @@ void respawn_objects(){
         }
     }
     for (int i{0}; i < fuel_nbr; i++) {
-        if (fuels[i].getState() == killed) {
+        if (fuels[i].getState() == deleted) {
             fuels[i] = Fuel(1); // spawns fuel
             float x = static_cast<float >(rand()% 1024) ;  //change depending on frame size or spawning window
 
             fuels[i].setPos(x,0 - enemys[i].getHeight());
+            break;
             for(int j{0} ; j < i;j++) {
                 if (fuels[i].getPos().y - fuels[j].getPos().y <= 20 && fuels[i].getPos().y - fuels[j].getPos().y >= -20 ) {
                     fuels[i] = Fuel();  //kills fuel

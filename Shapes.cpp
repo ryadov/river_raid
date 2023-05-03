@@ -10,6 +10,7 @@ sf::Sprite  pick_shape (Shapes shape) {
     switch (shape) {
         case empty :
             spt.setTextureRect(sf::IntRect(0, 0, 0, 0));
+            break;
         case player :
             spt.setTextureRect(sf::IntRect(26, 17, 14, 13));
             break;

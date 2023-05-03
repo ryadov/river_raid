@@ -8,12 +8,15 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
+#include <iostream>
 
 #include "Shapes.h"
 #include "Character.hpp"
 #include "Player.h"
 #include "Enemy.h"
 #include "Fuel.h"
+using namespace std ;
+
 
 //globals
 const int  enemy_nbr = 20 ;
