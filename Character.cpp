@@ -18,7 +18,11 @@ void Character::kill(Sprite shape) {
     m_killed = explode;
     m_shape = shape ;
     m_shape.setPosition(Collidable::x,Collidable::y);
-
+}
+void Character::delete_character() {
+    m_killed = killed;
+    m_shape = pick_shape(empty) ;
+    m_shape.setPosition(Collidable::x,Collidable::y);
 }
 
 void Character::setPos(float x , float y){
@@ -27,10 +31,10 @@ void Character::setPos(float x , float y){
     Collidable::y = y;
 }
 
-State Character::setState(State state = killed) {
+void Character::setState(State state = killed) {
     m_shape = pick_exp(exp5);
     m_shape.setPosition(Collidable::x,Collidable::y);
-    return m_killed = state ;
+    m_killed = state ;
 }
 
 State Character::getState() {

@@ -40,21 +40,7 @@ void init_objects() {
     // fuel tank initilization
     //Fuel fuels[fuel_nbr] {};
     for(int i{0} ; i < fuel_nbr;i++){
-        fuels[i] = Fuel(1); // spawns fuel
-        float x = static_cast<float >(rand()% 1024) ;  //change depending on frame size or spawning window
-        float y = static_cast<float >(rand()% 1024) ;  //change depending on frame size or spawning window
-        fuels[i].setPos(x,y);
-        if (pl.isColliding(fuels[i])) {
-            fuels[i] = Fuel(); // kills fuel
-            --i ;
-        }
-        for(int j{0} ; j < i;j++) {
-            if (fuels[i].getPos().y - fuels[j].getPos().y <= 20 && fuels[i].getPos().y - fuels[j].getPos().y >= -20 ) {
-                fuels[i] = Fuel();  //kills fuel
-                --i ;
-                break;
-            }
-        }
+
     }
 }
 
@@ -146,4 +132,63 @@ void animate_delete() {
         animation_c = 0 ;
     }
     animation_c++ ;
+}
+
+void kill_objects_outsideFrame(){
+    for (int i{0}; i < enemy_nbr; i++) {
+        if (enemys[i].getY() > 1024) {
+            enemys[i].setState(killed);
+        }
+    }
+    for (int i{0}; i < fuel_nbr; i++) {
+        if (fuels[i].getY() > 1024) {
+            fuels[i].setState(killed);
+        }
+    }
+
+    for (int i{0}; i < shots_nbr; i++) {
+        if (shots[i].getY() + shots[i].getHeight() < 0) {
+            shots[i] = Character();
+        }
+    }
+}
+
+void respawn_objects(){
+    for (int i{0}; i < enemy_nbr; i++) {
+        if (enemys[i].getState() == killed) {
+            //choose random enemy shape which are given the values between 5 to 9
+            Enemy::e_Enemy enm = static_cast<Enemy::e_Enemy>(rand()%5+5);
+
+            enemys[i] = Enemy(enm);
+            float x = static_cast<float >(rand()% 1024) ;  // change depending on frame size or spawning window
+
+            enemys[i].setPos(x,0 - enemys[i].getHeight());
+
+            for(int j{0} ; j < i;j++) {
+                if (enemys[i].getPos().y - enemys[j].getPos().y <= 20 && enemys[i].getPos().y - enemys[j].getPos().y >= -20 ) {
+                    enemys[i] = Enemy();
+                    --i ;
+                    break;
+                }
+            }
+        }
+    }
+    for (int i{0}; i < fuel_nbr; i++) {
+        if (fuels[i].getState() == killed) {
+            fuels[i] = Fuel(1); // spawns fuel
+            float x = static_cast<float >(rand()% 1024) ;  //change depending on frame size or spawning window
+
+            fuels[i].setPos(x,0 - enemys[i].getHeight());
+            for(int j{0} ; j < i;j++) {
+                if (fuels[i].getPos().y - fuels[j].getPos().y <= 20 && fuels[i].getPos().y - fuels[j].getPos().y >= -20 ) {
+                    fuels[i] = Fuel();  //kills fuel
+                    --i ;
+                    break;
+                }
+            }
+        }
+    }
+
+
+
 }

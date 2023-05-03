@@ -28,9 +28,11 @@ extern Player pl ;
 
 // game instenstiation
 void init_objects() ;
+void respawn_objects(); //this algorithm doesnt work for now // until we fix the deleting of objects issue
 void move_objects() ;
 void move_objects_down();
 void kill_objects() ;
+void kill_objects_outsideFrame() ;
 void control_player();
 void refuel_player();
 

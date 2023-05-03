@@ -35,10 +35,11 @@ public:
 
     Sprite  draw() ;
     void kill( Sprite shape);
+    void delete_character();
     // setters
     void setPos(float x , float y);
     void setOrigin(float x, float y);
-    State setState(State state) ;
+    void setState(State state) ;
     //getters
     State getState() ;
     Vector2f getPos();

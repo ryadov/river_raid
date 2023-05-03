@@ -67,6 +67,7 @@ int main() {
         }
 
         kill_objects() ;
+        kill_objects_outsideFrame();
         move_objects();
 
 
@@ -88,6 +89,16 @@ int main() {
 
         animate_delete();
 
+        /*
+        // until we fix the deleteing of objects issue
+        //this algorithem doesnt work for now
+        static int spawn_rate{0};
+        if (spawn_rate > 1000) {
+            respawn_objects();
+            spawn_rate = 0 ;
+        }
+        ++spawn_rate ;
+        */
     }
 
     return 0;
