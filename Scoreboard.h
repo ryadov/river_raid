@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <sstream>
-
+#include <iostream>
 #include "Shapes.h"
 #include "Collidable.hpp"
 using namespace sf ;
@@ -38,6 +38,7 @@ protected:
 
 public:
     Scoreboard(){
+
         set_interface_pose();
 
     }

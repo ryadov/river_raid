@@ -49,6 +49,12 @@ int main() {
 
                 }
             }
+            if (event.type ==Event::KeyPressed) {
+                if (event.key.code == Keyboard::Q) {
+
+
+                }
+            }
 
 
         }
@@ -67,6 +73,25 @@ int main() {
             pl.move(0, 1);
 
         }
+
+        //for testing
+        if (Keyboard::isKeyPressed(Keyboard::Q)) {
+            board.change_fuel(-1);
+
+        }
+        if (Keyboard::isKeyPressed(Keyboard::W)) {
+            board.change_fuel(1);
+
+        }
+        if (Keyboard::isKeyPressed(Keyboard::A)) {
+            board.update_score(100);
+
+        }
+        if (Keyboard::isKeyPressed(Keyboard::S)) {
+            board.update_lifes(1);
+
+        }
+
 
         kill_objects() ;
         kill_objects_outsideFrame();

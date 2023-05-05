@@ -13,7 +13,8 @@ void  Scoreboard::set_interface_pose() {
     float mark_w { fuel_mark.getLocalBounds().width * scale};
     float marker_d = 6 * scale;
     float marker_h = 4 * scale;
-    max_fuel = tank_w - 2 * marker_d ;
+    max_fuel = tank_w - 2 * marker_d -mark_w ;
+    fuel_amount = max_fuel ;
     fuel_tank.setPosition(frame_width/2 - tank_w /2, 50);  //  ( offset from score board rectangle)
     mark_pose = fuel_tank.getPosition().x + marker_d + fuel_amount;
     fuel_mark.setPosition(mark_pose, fuel_tank.getPosition().y + marker_h);
@@ -26,49 +27,51 @@ void  Scoreboard::set_interface_pose() {
     score_text.setCharacterSize(58); // set the character size in pixels
     score_text.setFillColor(Color::Yellow); // set the color
     score_text.setPosition(frame_width/2 - tank_w/2+5, -15);
-    stream.clear();
+    stream.str("");
 
     stream << m_lifes ;
     lifes_text.setString(stream.str());
     lifes_text.setCharacterSize(58); // set the character size in pixels
     lifes_text.setFillColor(Color::Yellow); // set the color
     lifes_text.setPosition(frame_width/2 - tank_w/2+5, 80);
-    stream.clear();
+    stream.str("");
 
 }
 
 
 
 void Scoreboard::change_fuel( float amount){
-    if ( fuel_amount >= max_fuel || fuel_amount <= 0 ){
+    if ( (fuel_amount >= max_fuel && amount > 0) || (fuel_amount <= 0 && amount < 0 ) ){
         return ;
     }
+
     fuel_amount += amount ;
-    mark_pose += fuel_amount ;
+    mark_pose += amount ;
     fuel_mark.setPosition(mark_pose , fuel_mark.getPosition().y) ;
+    cout << fuel_amount << "/" << max_fuel << endl ;
 }
 
 void Scoreboard::update_score(int amount) {
     int cycle = 10000 ;
     m_score += amount;
-    if (m_score > cycle) {
+    if (!(m_score % cycle)) {
         update_lifes(1);
     }
-    stream.clear() ;
+    stream.str("");
     stream << m_score ;
     score_text.setString(stream.str());
-    stream.clear();
+    stream.str("");
 
 }
 
 void Scoreboard::update_lifes(int d) {
-    if (m_lifes == 0) return;
+    if (m_lifes < 0) return;
     m_lifes += d ;
 
-    stream.clear();
-    stream << m_score ;
-    score_text.setString(stream.str());
-    stream.clear();
+    stream.str("");
+    stream << m_lifes ;
+    lifes_text.setString(stream.str());
+    stream.str("");
 }
 
 Sprite Scoreboard::draw() {
@@ -83,6 +86,7 @@ Sprite Scoreboard::draw() {
     texture.display();
     sprite.setTexture(texture.getTexture()) ;
     sprite.setPosition(0,frame_hight-150);      // to dispaly it at the bottom of the scean 150 is the hieght
+
     return sprite ;
 
 }
