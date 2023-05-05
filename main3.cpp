@@ -6,14 +6,15 @@
 #define FRAME_RATE 60
 
 sf::Texture texture ;
-
+RenderWindow window ;
 
 Enemy enemys[enemy_nbr] {};
 Character shots[shots_nbr] {};
 Fuel fuels[fuel_nbr] {};
 Player pl;
+Scoreboard board ;
 int main() {
-    sf::RenderWindow window(sf::VideoMode(WIN_W, WIN_H), "My window");
+    window.create(VideoMode(WIN_W, WIN_H), "My window");
     window.setPosition(sf::Vector2i(0,0));
     window.setFramerateLimit(FRAME_RATE);
     //load an image
@@ -58,7 +59,7 @@ int main() {
             pl.move(1, 0);
 
         if (Keyboard::isKeyPressed(Keyboard::Up)){
-            //pl.move(0, 1);
+
             move_objects_down() ;
         }
 
@@ -73,19 +74,7 @@ int main() {
 
 
         window.clear(sf::Color::Blue);
-        window.draw(pl.draw());
-
-
-        for (int i{0}; i < enemy_nbr ; i++){
-            window.draw(enemys[i].draw());
-        }
-        for (int i{0}; i < 100 ; i++){
-            window.draw(shots[i].draw());
-        }
-        for (int i{0}; i < fuel_nbr ; i++){
-            window.draw(fuels[i].draw());
-        }
-
+        draw_sean();
         window.display();
 
         animate_delete();

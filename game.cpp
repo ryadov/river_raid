@@ -213,3 +213,20 @@ void respawn_objects(){
 
 
 }
+
+
+void draw_sean(){
+    window.draw(pl.draw());
+
+
+    for (int i{0}; i < enemy_nbr ; i++){
+        window.draw(enemys[i].draw());
+    }
+    for (int i{0}; i < 100 ; i++){
+        window.draw(shots[i].draw());
+    }
+    for (int i{0}; i < fuel_nbr ; i++){
+        window.draw(fuels[i].draw());
+    }
+    window.draw(board.draw());
+}

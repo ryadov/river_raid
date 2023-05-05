@@ -15,6 +15,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Fuel.h"
+#include "Scoreboard.h"
 using namespace std ;
 
 
@@ -26,8 +27,12 @@ const int  fuel_nbr =  5 ;
 extern Enemy enemys[enemy_nbr];
 extern Character shots[shots_nbr];
 extern Fuel  fuels[fuel_nbr];
+extern Scoreboard board ;
 //player
 extern Player pl ;
+
+//window object
+extern RenderWindow window ;
 
 // game instenstiation
 void init_objects() ;
@@ -40,6 +45,9 @@ void control_player();
 void refuel_player();
 
 void animate_delete() ;
+
+//draw
+void draw_sean();
 
 /*
 class Game {
