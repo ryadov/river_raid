@@ -4,10 +4,11 @@
 
 #ifndef TEST_ENEMY_H
 #define TEST_ENEMY_H
+#include <iostream>
 #include "Character.hpp"
 #include "Shapes.h"
 
-
+using namespace std;
 
 
 class Enemy : public Character {
@@ -39,9 +40,11 @@ public:
                 break;
             case ship:
                 m_speed = 0.5 ;
+                //m_dir = false ;
                 break;
             case plane:
                 m_speed = 2 ;
+                //m_dir = false;
                 break;
             case bridge:
                 m_speed = 0 ;
@@ -52,8 +55,8 @@ public:
     }
 
     void move_lr ();
+    void setDir(bool dir) {m_dir = dir ;}
 
-    //Sprite draw() ;
 
 
 };

@@ -59,10 +59,10 @@ int main() {
 
         }
         if (Keyboard::isKeyPressed(Keyboard::Left))
-            pl.move(-1, 0);
+            pl.move(-2, 0);
 
         if (Keyboard::isKeyPressed(Keyboard::Right))
-            pl.move(1, 0);
+            pl.move(2, 0);
 
         if (Keyboard::isKeyPressed(Keyboard::Up)){
 
@@ -70,11 +70,11 @@ int main() {
         }
 
         if (Keyboard::isKeyPressed(Keyboard::Down)) {
-            pl.setSpeed(1);
+            pl.setSpeed(3);
 
         }
         else if (!(Keyboard::isKeyPressed(Keyboard::Down))) {
-            pl.setSpeed(3);
+            pl.setSpeed(0);
 
         }
 

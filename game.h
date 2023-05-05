@@ -20,7 +20,7 @@ using namespace std ;
 
 
 //globals
-const int  enemy_nbr = 20 ;
+const int  enemy_nbr = 10 ;
 const int  shots_nbr = 100 ;
 const int  fuel_nbr =  10 ;
 
