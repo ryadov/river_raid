@@ -40,7 +40,7 @@ int main() {
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed) window.close();
             if (event.type ==Event::KeyPressed) {
-                if (event.key.code == Keyboard::Enter) {
+                if (event.key.code == Keyboard::Space) {
                     shoot_botton = true;
                     if (shot_c >= shots_nbr) shot_c = 0;
                     shots[shot_c] = pl.shoot();
@@ -66,13 +66,18 @@ int main() {
 
         if (Keyboard::isKeyPressed(Keyboard::Up)){
 
-            move_objects_down() ;
+
         }
 
         if (Keyboard::isKeyPressed(Keyboard::Down)) {
-            pl.move(0, 1);
+            pl.setSpeed(1);
 
         }
+        else if (!(Keyboard::isKeyPressed(Keyboard::Down))) {
+            pl.setSpeed(3);
+
+        }
+
 
         //for testing
         if (Keyboard::isKeyPressed(Keyboard::Q)) {
@@ -95,7 +100,9 @@ int main() {
 
         kill_objects() ;
         kill_objects_outsideFrame();
+        move_objects_down() ;
         move_objects();
+        refuel_player();
 
 
         window.clear(sf::Color::Blue);

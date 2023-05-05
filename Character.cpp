@@ -19,6 +19,9 @@ void Character::kill(Sprite shape) {
     m_shape = shape ;
     m_shape.setPosition(Collidable::x,Collidable::y);
 }
+void Character::move_d(float speed){
+    move(0,speed);
+}
 void Character::delete_character() {
     m_killed = killed;
     m_shape = pick_shape(empty) ;

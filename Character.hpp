@@ -36,12 +36,14 @@ public:
 
     Sprite  draw() ;
     void kill( Sprite shape);
+    void move_d(float speed);
     void delete_character();
     // setters
     void setPos(float x , float y);
     void setOrigin(float x, float y);
     void setState(State state) ;
     //getters
+    int getScore(){ return m_score;}
     State getState() ;
     Vector2f getPos();
     void move(float xOff, float yOff);

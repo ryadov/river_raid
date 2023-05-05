@@ -10,7 +10,7 @@
 class Player : public Character {
 private:
     float fuel_amount {};
-    float m_speed {};
+    float m_speed {3};
     int m_lifes{3};
 
 public:

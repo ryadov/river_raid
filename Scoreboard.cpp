@@ -48,7 +48,12 @@ void Scoreboard::change_fuel( float amount){
     fuel_amount += amount ;
     mark_pose += amount ;
     fuel_mark.setPosition(mark_pose , fuel_mark.getPosition().y) ;
-    cout << fuel_amount << "/" << max_fuel << endl ;
+    //cout << fuel_amount << "/" << max_fuel << endl ;
+}
+
+bool Scoreboard::check_fuel() {
+    if(fuel_amount) return true;
+    return false ;
 }
 
 void Scoreboard::update_score(int amount) {

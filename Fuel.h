@@ -15,7 +15,7 @@ public:
         m_score = setScore(fuel);
     }
 
-    void move_d ();
+
 };
 
 

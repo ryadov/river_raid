@@ -52,7 +52,6 @@ public:
     }
 
     void move_lr ();
-    void move_d ();
 
     //Sprite draw() ;
 

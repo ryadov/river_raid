@@ -65,17 +65,18 @@ void move_objects() {
     }
     for (int i{0}; i < shots_nbr ; i++){
         if(shots[i].getState() == deleted) continue;
-        shots[i].move(0,-2);
+        shots[i].move(0,-3);
     }
 }
 
 void move_objects_down() {
     for (int i{0}; i < enemy_nbr ; i++){
-        enemys[i].move_d();
+        enemys[i].move_d(pl.getSpeed());
     }
     for (int i{0}; i < fuel_nbr ; i++){
-        fuels[i].move_d();
+        fuels[i].move_d(pl.getSpeed());
     }
+    board.change_fuel(-0.1);
 }
 
 void kill_objects() {
@@ -86,6 +87,7 @@ void kill_objects() {
         if (pl.isColliding(enemys[i])) {
             pl.kill(pick_exp(exp1));
             enemys[i].kill(pick_exp(exp1));
+            board.update_lifes(-1);
         }
     }
     for (int i{0}; i < enemy_nbr ; i++) {
@@ -96,6 +98,7 @@ void kill_objects() {
             if (shots[j].isColliding(enemys[i])) {
                 shots[j] = Character();
                 enemys[i].kill(pick_exp(exp1));
+                board.update_score(enemys[i].getScore());
             }
     }
     for (int i{0}; i < fuel_nbr ; i++) {
@@ -105,7 +108,9 @@ void kill_objects() {
         for (int j{0}; j < shots_nbr; j++)
             if (shots[j].isColliding(fuels[i])) {
                 shots[j] = Character();
+                shots[j].setPos(1030,1030);  // a random location so the ampty shot will not collide with the empty enemy
                 fuels[i].kill(pick_exp(exp2));
+                board.update_score(fuels[i].getScore());
             }
     }
 }
@@ -229,4 +234,12 @@ void draw_sean(){
         window.draw(fuels[i].draw());
     }
     window.draw(board.draw());
+}
+
+void refuel_player() {
+    for(int i{0} ; i < fuel_nbr; i++){
+        if(pl.isColliding(fuels[i])) {
+            board.change_fuel(5);
+        }
+    }
 }

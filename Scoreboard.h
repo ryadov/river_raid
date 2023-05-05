@@ -30,7 +30,7 @@ protected:
     int m_score {0};
     Text score_text ;
 
-    int m_lifes {0};
+    int m_lifes {3};
     Text lifes_text ;
 
     Font font;
@@ -48,6 +48,7 @@ public:
     float getFuel( ){return  fuel_amount;}
     void setFuel(float amount){fuel_amount = amount;}
     void change_fuel( float amount);
+    bool check_fuel();
     //void setMark_pose(float pose) { mark_pose = pose ;}
     //float getMark_pose() {return  mark_pose;}
     void update_score(int amount) ;

@@ -13,9 +13,7 @@ void Enemy::move_lr() {
     }
     else move(-m_speed,0);
 }
-void Enemy::move_d(){
-    move(0,1);
-}
+
 
 /*
 Sprite Enemy::draw() {
