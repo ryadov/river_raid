@@ -46,13 +46,14 @@ public:
     void set_interface_pose();
 
     float getFuel( ){return  fuel_amount;}
+    float getTankSize(){return max_fuel;}
     void setFuel(float amount){fuel_amount = amount;}
     void change_fuel( float amount);
     bool check_fuel();
-    //void setMark_pose(float pose) { mark_pose = pose ;}
-    //float getMark_pose() {return  mark_pose;}
+
     void update_score(int amount) ;
     void update_lifes(int d) ;
+    int get_lifes(){ return m_lifes;}
     Sprite draw();
 
 };

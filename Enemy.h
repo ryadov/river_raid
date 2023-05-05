@@ -40,11 +40,9 @@ public:
                 break;
             case ship:
                 m_speed = 0.5 ;
-                //m_dir = false ;
                 break;
             case plane:
                 m_speed = 2 ;
-                //m_dir = false;
                 break;
             case bridge:
                 m_speed = 0 ;

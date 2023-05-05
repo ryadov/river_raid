@@ -32,11 +32,9 @@ sf::Sprite  pick_shape (Shapes shape) {
             break;
         case ship :
             spt.setTextureRect(sf::IntRect(4,58,32,10));
-
             break;
         case plane :
             spt.setTextureRect(sf::IntRect(40,49,16,6));
-
             break;
 
         case fuel :

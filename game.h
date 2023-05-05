@@ -30,7 +30,9 @@ extern Fuel  fuels[fuel_nbr];
 extern Scoreboard board ;
 //player
 extern Player pl ;
+extern bool reset ;
 
+extern Font font ;
 //window object
 extern RenderWindow window ;
 
@@ -48,6 +50,8 @@ void animate_delete() ;
 
 //draw
 void draw_sean();
+
+void reset_game();
 
 /*
 class Game {

@@ -88,6 +88,7 @@ void kill_objects() {
             pl.kill(pick_exp(exp1));
             enemys[i].kill(pick_exp(exp1));
             board.update_lifes(-1);
+            reset = true ;
         }
     }
     for (int i{0}; i < enemy_nbr ; i++) {
@@ -241,5 +242,39 @@ void refuel_player() {
         if(pl.isColliding(fuels[i])) {
             board.change_fuel(5);
         }
+    }
+}
+
+void reset_game(){
+    bool old {reset};
+    while(reset) {
+
+        Text text;
+        text.setFont(font);
+        if(board.get_lifes()) {
+            text.setString("press Q to respawn");
+            if (Keyboard::isKeyPressed(Keyboard::Q)) {
+                reset = false;
+            }
+        }
+        else {
+            text.setString("Game over press Q to exit");
+            if (Keyboard::isKeyPressed(Keyboard::Q)) {
+                window.close();
+                break;
+            }
+        }
+        text.setCharacterSize(58); // set the character size in pixels
+        text.setFillColor(Color::Yellow); // set the color
+        text.setPosition(500-text.getLocalBounds().width/2,500);
+
+        window.clear(Color::Transparent);
+        window.draw(text);
+        window.display();
+    }
+    if(reset != old ){
+        pl = Player();
+        board.change_fuel(board.getTankSize()-board.getFuel());
+        init_objects();
     }
 }

@@ -12,7 +12,10 @@ Enemy enemys[enemy_nbr] {};
 Character shots[shots_nbr] {};
 Fuel fuels[fuel_nbr] {};
 Player pl;
+bool reset{false};
 Scoreboard board ;
+Font font;
+
 int main() {
     window.create(VideoMode(WIN_W, WIN_H), "My window");
     window.setPosition(sf::Vector2i(0,0));
@@ -23,6 +26,7 @@ int main() {
     if (!texture.loadFromFile("sprite_sheet_clear.png")) return 0 ;
 
 
+    font.loadFromFile("../Phosphate.ttc");
 
 
     double x {100};
@@ -66,8 +70,8 @@ int main() {
 
         if (Keyboard::isKeyPressed(Keyboard::Up)){
 
-
         }
+
 
         if (Keyboard::isKeyPressed(Keyboard::Down)) {
             pl.setSpeed(3);
@@ -115,11 +119,13 @@ int main() {
         // until we fix the deleteing of objects issue
         //this algorithem doesnt work for now
         static int spawn_rate{0};
-        if (spawn_rate > 1) {
+        if (spawn_rate > 5) {
             respawn_objects();
             spawn_rate = 0 ;
         }
         ++spawn_rate ;
+
+        reset_game();
 
     }
 
