@@ -24,7 +24,7 @@ void Character::move_d(float speed){
 }
 void Character::delete_character() {
     m_killed = killed;
-    m_shape = pick_shape(empty) ;
+    m_shape = pick_shape(Shapes::empty) ;
     m_shape.setPosition(Collidable::x,Collidable::y);
 }
 

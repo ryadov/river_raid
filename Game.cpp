@@ -2,21 +2,28 @@
 // Created by REM005 on 5/2/2023.
 //
 
-#include "game.h"
+#include "Game.hpp"
+
 
 void init_objects() {
-    //Player pl;
-    pl.setPos(500,800);  //change depending on frame size or spawning window
+    // Player init
+    pl.setPos(PLAYER_INIT_X,PLAYER_INIT_Y-500);  //change depending on frame size or spawning window
 
+    // Greenery init
+//    Tile right_lane()
     // enemy initilization
-    //Enemy enemys[enemy_nbr] {};
+    // Enemy enemys[enemy_nbr] {};
     for(int i{0} ; i < enemy_nbr;i++){
         //choose random enemy shape which are given the values between 5 to 9
         Enemy::e_Enemy enm = static_cast<Enemy::e_Enemy>(rand()%5+5);
-
+        float x;
         enemys[i] = Enemy(enm);
-        float x = static_cast<float >(rand()% 1024) ;  // change depending on frame size or spawning window
-        float y = static_cast<float >(rand()% 1024) ;  // change depending on frame size or spawning window
+
+        if(enm != Enemy::plane)
+            x = static_cast<float >(rand() % (SPAWN_AREA_END - SPAWN_AREA_BEGIN + 1) + SPAWN_AREA_BEGIN)  ;  // change depending on frame size or spawning window
+        else
+            x = static_cast<float >(rand() % (SPAWN_AREA_END + PLANE_OFFSET - (SPAWN_AREA_BEGIN - PLANE_OFFSET) + 1) + SPAWN_AREA_BEGIN - PLANE_OFFSET);
+        float y = static_cast<float >(rand()% WIN_H) ;  // change depending on frame size or spawning window
         enemys[i].setPos(x,y);
         if (pl.isColliding(enemys[i])) {
             enemys[i] = Enemy();
@@ -43,8 +50,8 @@ void init_objects() {
     //Fuel fuels[fuel_nbr] {};
     for(int i{0} ; i < fuel_nbr;i++){
         fuels[i] = Fuel(1); // spawns fuel
-        float x = static_cast<float >(rand()% 1024) ;  //change depending on frame size or spawning window
-        float y = static_cast<float >(rand()% 1024) ;  //change depending on frame size or spawning window
+        float x = static_cast<float>(rand() % (SPAWN_AREA_END - SPAWN_AREA_BEGIN + 1) + SPAWN_AREA_BEGIN) ;  //change depending on frame size or spawning window
+        float y = static_cast<float>(rand() % WIN_H) ;  //change depending on frame size or spawning window
         fuels[i].setPos(x,y);
         for(int j{0} ; j < i;j++) {
             if (fuels[i].getPos().y - fuels[j].getPos().y <= 20 && fuels[i].getPos().y - fuels[j].getPos().y >= -20 ) {
@@ -162,12 +169,12 @@ void animate_delete() {
 
 void kill_objects_outsideFrame(){
     for (int i{0}; i < enemy_nbr; i++) {
-        if (enemys[i].getY() > 1024) {
+        if (enemys[i].getY() > WIN_H) {
             enemys[i].setState(killed);
         }
     }
     for (int i{0}; i < fuel_nbr; i++) {
-        if (fuels[i].getY() > 1024) {
+        if (fuels[i].getY() > WIN_H) {
             fuels[i].setState(killed);
         }
     }
@@ -184,12 +191,15 @@ void respawn_objects(){
         if (enemys[i].getState() == deleted) {
             //choose random enemy shape which are given the values between 5 to 9
             Enemy::e_Enemy enm = static_cast<Enemy::e_Enemy>(rand()%5+5);
-
+            float x;
             enemys[i] = Enemy(enm);
-            float x = static_cast<float >(rand()% 1024) ;  // change depending on frame size or spawning window
+            if(enm == Enemy::plane)
+                x = static_cast<float >(rand() % (SPAWN_AREA_END + PLANE_OFFSET - (SPAWN_AREA_BEGIN - PLANE_OFFSET) + 1) + SPAWN_AREA_BEGIN - PLANE_OFFSET);
+            else
+                x = static_cast<float >(rand() %(SPAWN_AREA_END - SPAWN_AREA_BEGIN + 1) + SPAWN_AREA_BEGIN);
 
             enemys[i].setPos(x,0 - enemys[i].getHeight());
-            break;
+            break;  // ?? code below is unreachable
             for(int j{0} ; j < i;j++) {
                 if (enemys[i].getPos().y - enemys[j].getPos().y <= 1 && enemys[i].getPos().y - enemys[j].getPos().y >= -1 ) {
                     enemys[i] = Enemy();
@@ -202,10 +212,10 @@ void respawn_objects(){
     for (int i{0}; i < fuel_nbr; i++) {
         if (fuels[i].getState() == deleted) {
             fuels[i] = Fuel(1); // spawns fuel
-            float x = static_cast<float >(rand()% 1024) ;  //change depending on frame size or spawning window
+            float x = static_cast<float >(rand() % (SPAWN_AREA_END - SPAWN_AREA_BEGIN + 1) + SPAWN_AREA_BEGIN) ;  //change depending on frame size or spawning window
 
             fuels[i].setPos(x,0 - enemys[i].getHeight());
-            break;
+            break;  // ?? code below is unreachable
             for(int j{0} ; j < i;j++) {
                 if (fuels[i].getPos().y - fuels[j].getPos().y <= 20 && fuels[i].getPos().y - fuels[j].getPos().y >= -20 ) {
                     fuels[i] = Fuel();  //kills fuel
@@ -221,19 +231,20 @@ void respawn_objects(){
 }
 
 
-void draw_sean(){
+void draw_scene(){
     window.draw(pl.draw());
 
 
     for (int i{0}; i < enemy_nbr ; i++){
         window.draw(enemys[i].draw());
     }
-    for (int i{0}; i < 100 ; i++){
+    for (int i{0}; i < shots_nbr ; i++){
         window.draw(shots[i].draw());
     }
     for (int i{0}; i < fuel_nbr ; i++){
         window.draw(fuels[i].draw());
     }
+    window.draw(right_lane.draw());
     window.draw(board.draw());
 }
 
@@ -250,23 +261,23 @@ void reset_game(){
     while(reset) {
 
         Text text;
-        text.setFont(font);
+        text.setFont(displayFont);
         if(board.get_lifes()) {
-            text.setString("press Q to respawn");
-            if (Keyboard::isKeyPressed(Keyboard::Q)) {
+            text.setString("R TO RESPAWN");
+            if (Keyboard::isKeyPressed(Keyboard::R)) {
                 reset = false;
             }
         }
         else {
-            text.setString("Game over press Q to exit");
+            text.setString("Game Over\n\nQ TO EXIT");
             if (Keyboard::isKeyPressed(Keyboard::Q)) {
                 window.close();
                 break;
             }
         }
-        text.setCharacterSize(58); // set the character size in pixels
+        text.setCharacterSize(FONT_SIZE); // set the character size in pixels
         text.setFillColor(Color::Yellow); // set the color
-        text.setPosition(500-text.getLocalBounds().width/2,500);
+        text.setPosition((WIN_W-text.getLocalBounds().width)/2,WIN_H/2);
 
         window.clear(Color::Transparent);
         window.draw(text);

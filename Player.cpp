@@ -2,7 +2,8 @@
 // Created by REM005 on 4/27/2023.
 //
 
-#include "Player.h"
+#include "Player.hpp"
+
 using namespace sf ;
 
 Sprite Player::shoot() {
@@ -18,4 +19,9 @@ void  Player::refueling() {
 
 void Player::defueling(float speed) {
     fuel_amount -= speed;
+}
+
+void Player::changeSprite(Sprite s) {
+    s.setPosition(this->m_shape.getPosition());
+    this->m_shape = s;
 }

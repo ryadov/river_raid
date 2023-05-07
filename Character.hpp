@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Collidable.hpp"
-#include "Shapes.h"
+#include "Shapes.hpp"
 
 using namespace sf;
 
