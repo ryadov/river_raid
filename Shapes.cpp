@@ -312,22 +312,22 @@ int setScore(Shapes shape) {
     int score {};
     switch (shape) {
         case heli_1:
-            score = 10 ;
+            score = 60 ;
             break;
         case heli_2:
-            score = 10 ;
+            score = 60 ;
             break;
         case ship:
-            score = 10 ;
+            score = 30 ;
             break;
         case plane:
-            score = 10 ;
+            score = 100 ;
             break;
         case bridge:
-            score = 10 ;
+            score = 500 ;
             break;
         case fuel:
-            score = 10 ;
+            score = 80 ;
             break;
         case Shapes::empty:
             break;
