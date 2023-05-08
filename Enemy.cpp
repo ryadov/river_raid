@@ -36,4 +36,8 @@ void Enemy::move_lr() {
     }
 }
 
+Enemy::e_Enemy Enemy::getEnemyType() {
+    return enemy_type;
+}
+
 
