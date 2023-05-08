@@ -46,3 +46,10 @@ float Collidable::getRight(){return x + w;}
 float Collidable::getLeft(){return x;}
 float Collidable::getTop(){return y;}
 float Collidable::getBottom(){return y + h;}
+
+Collidable::Collidable() {
+    x = 0;
+    y = 0;
+    w = 0;
+    h = 0;
+}

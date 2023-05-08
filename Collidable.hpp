@@ -16,6 +16,7 @@ enum CollisionDirection {
 
 class Collidable {
 public:
+    Collidable();
     Collidable(float x, float y, float w, float h);
     CollisionDirection collidesWith(const Collidable&);
     bool isColliding(const Collidable&);
