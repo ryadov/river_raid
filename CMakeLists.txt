@@ -7,7 +7,7 @@ FetchContent_Declare(SFML
         GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(river_raid main4.cpp
+add_executable(river_raid main5.cpp
         Character.cpp
         Character.hpp
 #        Sprites.cpp
