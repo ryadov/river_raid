@@ -15,10 +15,10 @@ Sprite  pick_shape (Shapes shape) {
         case player :
             spt.setTextureRect(IntRect(26, 17, 14, 13));
             break;
-        case player_r :
+        case player_l :
             spt.setTextureRect(IntRect(13,18,10,14));
             break;
-        case player_l :
+        case player_r :
             spt.setTextureRect(IntRect(43,18,10,14));
             break;
         case bullet :
