@@ -7,6 +7,7 @@
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -21,7 +22,7 @@
 #include "Tile.hpp"
 
 #define DELTA_X 1
-//#define WIN_H 1049
+//#define WIN_H 304
 #define WIN_H 941
 #define WIN_W 304
 #define TOL 2

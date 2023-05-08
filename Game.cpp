@@ -160,6 +160,12 @@ void move_objects_down() {
 }
 
 void kill_objects() {
+    if(!board.check_fuel()){
+        pl.kill(pick_exp(exp1));
+        board.update_lifes(-1);
+        reset = true ;
+    }
+
     if (pl.isColliding(right_lane) || pl.isColliding(right_lane2) || pl.isColliding(left_lane) || pl.isColliding(left_lane2)) {
         pl.kill(pick_exp(exp1));
         board.update_lifes(-1);
@@ -171,17 +177,30 @@ void kill_objects() {
         board.update_lifes(-1);
         reset = true ;
     }
-//    for (int i{0}; i < enemy_nbr ; i++) {
-//        if (enemys[i].getState() == explode || enemys[i].getState() == killed || enemys[i].getState() == deleted ){
-//            continue;
-//        }
-//        if (pl.isColliding(enemys[i])) {
-//            pl.kill(pick_exp(exp1));
-//            enemys[i].kill(pick_exp(exp1));
-//            board.update_lifes(-1);
-//            reset = true ;
-//        }
-//    }
+    for (int i{0}; i < enemy_nbr ; i++) {
+        if (enemys[i].getState() == explode || enemys[i].getState() == killed || enemys[i].getState() == deleted ){
+            continue;
+        }
+        if (pl.isColliding(enemys[i])) {
+            pl.kill(pick_exp(exp1));
+            enemys[i].kill(pick_exp(exp1));
+            board.update_lifes(-1);
+            reset = true ;
+        }
+    }
+
+    for (int i{0}; i < shots_nbr; i++) {
+        if (shots[i].isColliding(road_tl)
+            || shots[i].isColliding(road_bl)
+            || shots[i].isColliding(road_tr)
+            || shots[i].isColliding(road_br)
+            )
+        {
+            shots[i] = Character();
+            shots[i].move(WIN_W + 100, WIN_H + 100);
+        }
+    }
+
     for (int i{0}; i < enemy_nbr ; i++) {
         if (enemys[i].getState() == explode || enemys[i].getState() == killed  || enemys[i].getState() == deleted){
             continue;
@@ -217,7 +236,7 @@ void animate_delete() {
             if (enemys[i].getState() == killed ) {
                 enemys[i]=Enemy() ;
                 enemys[i].move(-100,-100);
-                cout << i << " enemy killed\n";
+//                cout << i << " enemy killed\n";
             }
 
         }
@@ -226,7 +245,7 @@ void animate_delete() {
             if (fuels[i].getState() == killed ) {
                 fuels[i]=Fuel()   ;
                 fuels[i].move(-100,-100);
-                cout << i <<" fuel killed\n";
+//                cout << i <<" fuel killed\n";
 
             }
 
@@ -384,7 +403,7 @@ void draw_scene(){
 void refuel_player() {
     for(int i{0} ; i < fuel_nbr; i++){
         if(pl.isColliding(fuels[i])) {
-            board.change_fuel(5);
+            board.change_fuel(1);
         }
     }
 }
