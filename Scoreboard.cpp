@@ -53,7 +53,7 @@ void Scoreboard::change_fuel( float amount){
 }
 
 bool Scoreboard::check_fuel() {
-    if(fuel_amount) return true;
+    if(fuel_amount>0) return true;
     return false ;
 }
 
