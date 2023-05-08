@@ -29,7 +29,7 @@ add_executable(river_raid main5.cpp
 #        LeaderBoard.cpp
         Tile.cpp
         Tile.hpp)
-target_link_libraries(river_raid PRIVATE sfml-graphics)
+target_link_libraries(river_raid PRIVATE sfml-graphics sfml-audio)
 target_compile_features(river_raid PRIVATE cxx_std_17)
 if (WIN32 AND BUILD_SHARED_LIBS)
     add_custom_command(TARGET river_raid POST_BUILD
