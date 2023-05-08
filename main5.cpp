@@ -146,7 +146,7 @@ int main() {
         // until we fix the deleteing of objects issue
         //this algorithem doesnt work for now
         static int spawn_rate{0};
-        if (spawn_rate > 5) {
+        if (spawn_rate > 10) {
             respawn_objects();
             spawn_rate = 0 ;
         }

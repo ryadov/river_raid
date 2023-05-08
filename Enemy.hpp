@@ -21,7 +21,7 @@ public:
         heli_2 = Shapes::heli_2,
         ship = Shapes::ship,
         plane = Shapes::plane,
-//        bridge = Shapes::bridge,
+        bridge = Shapes::bridge,
 
 
     };
@@ -52,10 +52,10 @@ public:
                 m_speed = 2 ;
                 enemy_type = plane;
                 break;
-//            case bridge:
-//                m_speed = 0 ;
-//                enemy_type = bridge;
-//                break;
+            case bridge:
+                m_speed = 0 ;
+                enemy_type = bridge;
+                break;
             case empty:
                 break;
         }

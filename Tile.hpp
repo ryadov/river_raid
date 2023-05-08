@@ -41,6 +41,8 @@ public:
     void setShape(Shapes);
     Sprite draw();
 
+    Vector2f getPos();
+
 };
 
 

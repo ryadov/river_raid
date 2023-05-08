@@ -62,3 +62,7 @@ void Tile::updatePosition() {
     }
 
 }
+
+Vector2f Tile::getPos(){
+    return m_shape.getPosition();
+}

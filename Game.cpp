@@ -51,14 +51,30 @@ void init_objects() {
         //choose random enemy shape which are given the values between 5 to 9
         Enemy::e_Enemy enm = static_cast<Enemy::e_Enemy>(rand()%4 + 5);
         float x;
+
         enemys[i] = Enemy(enm);
+        int enemy_width = enemys[i].getWidth() +2 ;
+        static float y{pl.getPos().y - enemys[i].getHeight() - 100 };  // let 100 be an offset between each character
+
+        // an ettempt to spwan ships baised on y value of the narrow section of the river
+        if ( y < road_tl.getPos().y + road_tl.getHeight() &&  y > road_bl.getPos().y+road_bl.getHeight()){
+            enemys[i] = Enemy(Enemy::bridge) ;
+            enemys[i].setPos(road_bl.getPos().x + road_bl.getWidth(),road_tl.getPos().y);
+            enemys[i+1] = Enemy(Enemy::bridge) ;
+            enemys[i+1].setPos(road_bl.getPos().x + road_bl.getWidth(),road_bl.getPos().y +road_bl.getHeight()*1/2);
+            y -= 100 + 2*road_bl.getHeight();
+            i++;
+            continue;
+        }
 
         if(enm != Enemy::plane)
-            x = static_cast<float >(rand() % (SPAWN_AREA_END - SPAWN_AREA_BEGIN + 1) + SPAWN_AREA_BEGIN)  ;  // change depending on frame size or spawning window
+            x = static_cast<float >(rand() % (SPAWN_AREA_END - SPAWN_AREA_BEGIN + 1 - enemy_width) + SPAWN_AREA_BEGIN)  ;  // change depending on frame size or spawning window
         else
             x = static_cast<float >(rand() % (SPAWN_AREA_END + PLANE_OFFSET - (SPAWN_AREA_BEGIN - PLANE_OFFSET) + 1) + SPAWN_AREA_BEGIN - PLANE_OFFSET);
-        float y = static_cast<float >(rand()% WIN_H) ;  // change depending on frame size or spawning window
+        //y = static_cast<float >(rand()% WIN_H) ;  // change depending on frame size or spawning window
         enemys[i].setPos(x,y);
+         y -= 100 ; // we decrease the y with the offset every time
+        /*
         if (pl.isColliding(enemys[i])) {
             enemys[i] = Enemy();
             cout << "object misplaced\n";
@@ -72,21 +88,27 @@ void init_objects() {
                 break;
             }
         }
+         */
     }
 
     // bullets initilization
     //Character shots[shots_nbr] {};
     for(int i{0} ; i < shots_nbr;i++){
         shots[i] = Character(pick_shape(Shapes::empty));
+        shots[i].move(WIN_W + 100 , WIN_H + 100);
     }
 
     // fuel tank initilization
     //Fuel fuels[fuel_nbr] {};
     for(int i{0} ; i < fuel_nbr;i++){
         fuels[i] = Fuel(1); // spawns fuel
-        float x = static_cast<float>(rand() % (SPAWN_AREA_END - SPAWN_AREA_BEGIN + 1) + SPAWN_AREA_BEGIN) ;  //change depending on frame size or spawning window
-        float y = static_cast<float>(rand() % WIN_H) ;  //change depending on frame size or spawning window
+        int fuel_width = fuels[i].getWidth() ;
+        float x = static_cast<float>(rand() % (SPAWN_AREA_END - SPAWN_AREA_BEGIN + 1 - fuel_width) + SPAWN_AREA_BEGIN) ;  //change depending on frame size or spawning window
+        //float y = static_cast<float>(rand() % WIN_H) ;  //change depending on frame size or spawning window
+        static float y {pl.getPos().y - fuels[i].getHeight() - 150 };  // initial spwan with offset of 150
         fuels[i].setPos(x,y);
+        y -= 150 ; // update it each time
+        /*
         for(int j{0} ; j < i;j++) {
             if (fuels[i].getPos().y - fuels[j].getPos().y <= 20 && fuels[i].getPos().y - fuels[j].getPos().y >= -20 ) {
                 fuels[i] = Fuel();  //kills fuel
@@ -94,6 +116,7 @@ void init_objects() {
                 break;
             }
         }
+         */
     }
 }
 
@@ -112,9 +135,11 @@ void move_objects() {
 
 void move_objects_down() {
     for (int i{0}; i < enemy_nbr ; i++){
+        if(enemys[i].getState() == deleted) continue;  // addtion to stop motion of deleted objects
         enemys[i].move_d(pl.getSpeed());
     }
     for (int i{0}; i < fuel_nbr ; i++){
+        if(fuels[i].getState() == deleted) continue;  // addtion to stop motion of deleted objects
         fuels[i].move_d(pl.getSpeed());
     }
     right_lane.move_d(pl.getSpeed());
@@ -164,6 +189,7 @@ void kill_objects() {
         for (int j{0}; j < shots_nbr; j++)
             if (shots[j].isColliding(enemys[i])) {
                 shots[j] = Character();
+                shots[j].move(WIN_W + 100 , WIN_H + 100);
                 enemys[i].kill(pick_exp(exp1));
                 board.update_score(enemys[i].getScore());
             }
@@ -175,7 +201,7 @@ void kill_objects() {
         for (int j{0}; j < shots_nbr; j++)
             if (shots[j].isColliding(fuels[i])) {
                 shots[j] = Character();
-                shots[j].setPos(1030,1030);  // a random location so the ampty shot will not collide with the empty enemy
+                shots[j].setPos(WIN_W + 100 , WIN_H + 100);  // a random location so the ampty shot will not collide with the empty enemy
                 fuels[i].kill(pick_exp(exp2));
                 board.update_score(fuels[i].getScore());
             }
@@ -190,6 +216,7 @@ void animate_delete() {
         for (int i{0}; i < enemy_nbr ; i++){
             if (enemys[i].getState() == killed ) {
                 enemys[i]=Enemy() ;
+                enemys[i].move(-100,-100);
                 cout << i << " enemy killed\n";
             }
 
@@ -198,6 +225,7 @@ void animate_delete() {
         for (int i{0}; i < fuel_nbr ; i++){
             if (fuels[i].getState() == killed ) {
                 fuels[i]=Fuel()   ;
+                fuels[i].move(-100,-100);
                 cout << i <<" fuel killed\n";
 
             }
@@ -241,6 +269,7 @@ void kill_objects_outsideFrame(){
     for (int i{0}; i < shots_nbr; i++) {
         if (shots[i].getY() + shots[i].getHeight() < 0) {
             shots[i] = Character();
+            shots[i].move(WIN_W + 100 , WIN_H + 100);
         }
     }
 }
@@ -269,12 +298,22 @@ void respawn_objects(){
             Enemy::e_Enemy enm = static_cast<Enemy::e_Enemy>(rand()%4 + 5);
             float x;
             enemys[i] = Enemy(enm);
+            int enemy_width = enemys[i].getWidth() +2 ;
             if(enm == Enemy::plane)
-                x = static_cast<float >(rand() % (SPAWN_AREA_END + PLANE_OFFSET - (SPAWN_AREA_BEGIN - PLANE_OFFSET) + 1) + SPAWN_AREA_BEGIN - PLANE_OFFSET);
+                x = static_cast<float >(rand() % (SPAWN_AREA_END + PLANE_OFFSET - (SPAWN_AREA_BEGIN - PLANE_OFFSET) + 1 - enemy_width) + SPAWN_AREA_BEGIN - PLANE_OFFSET);
             else
                 x = static_cast<float >(rand() %(SPAWN_AREA_END - SPAWN_AREA_BEGIN + 1) + SPAWN_AREA_BEGIN);
 
             enemys[i].setPos(x,0 - enemys[i].getHeight());
+            // an ettempt to spwan ships baised on y value of the narrow section of the river
+            if ( enemys[i].getPos().y < road_tl.getPos().y + road_tl.getHeight() &&  enemys[i].getPos().y > road_bl.getPos().y+road_bl.getHeight()){
+                enemys[i] = Enemy(Enemy::bridge) ;
+                enemys[i].setPos(road_bl.getPos().x + road_tl.getWidth(),road_tl.getPos().y);
+                enemys[i+1] = Enemy(Enemy::bridge) ;
+                enemys[i+1].setPos(road_bl.getPos().x + road_tl.getWidth(),road_bl.getPos().y+ road_bl.getHeight()*1/2);
+                i++ ;
+                continue;
+            }
             break;  // ?? code below is unreachable
             for(int j{0} ; j < i;j++) {
                 if (enemys[i].getPos().y - enemys[j].getPos().y <= 1 && enemys[i].getPos().y - enemys[j].getPos().y >= -1 ) {
@@ -288,10 +327,11 @@ void respawn_objects(){
     for (int i{0}; i < fuel_nbr; i++) {
         if (fuels[i].getState() == deleted) {
             fuels[i] = Fuel(1); // spawns fuel
-            float x = static_cast<float >(rand() % (SPAWN_AREA_END - SPAWN_AREA_BEGIN + 1) + SPAWN_AREA_BEGIN) ;  //change depending on frame size or spawning window
+            int fuel_width = fuels[i].getWidth() +2 ;
+            float x = static_cast<float >(rand() % (SPAWN_AREA_END - SPAWN_AREA_BEGIN + 1 - fuel_width) + SPAWN_AREA_BEGIN) ;  //change depending on frame size or spawning window
 
-            fuels[i].setPos(x,0 - enemys[i].getHeight());
-            break;  // ?? code below is unreachable
+            fuels[i].setPos(x,0 - fuels[i].getHeight());
+            break;  // ?? code below is unreachable  // i know  it lags the program
             for(int j{0} ; j < i;j++) {
                 if (fuels[i].getPos().y - fuels[j].getPos().y <= 20 && fuels[i].getPos().y - fuels[j].getPos().y >= -20 ) {
                     fuels[i] = Fuel();  //kills fuel
