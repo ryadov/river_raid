@@ -3,6 +3,8 @@
 using namespace std;
 using namespace sf;
 
+SoundBuffer shot_buf;
+Sound shot_sound;
 Texture texture ;
 Texture texture_land;
 RenderWindow window ;
@@ -51,6 +53,15 @@ int main() {
         return EXIT_FAILURE;
     }
 
+    if (!shot_buf.loadFromFile("../shoot_sound.mp3")) {
+        cout << "Could not load audio." << endl;
+        return EXIT_FAILURE;
+    }
+
+    shot_sound.setBuffer(shot_buf);
+
+
+
     double x {100}; // ??
     int dir {1};    // ??
 
@@ -67,10 +78,12 @@ int main() {
             if (event.type == Event::Closed) window.close();
             if (event.type ==Event::KeyPressed) {
                 if (event.key.code == Keyboard::Space) {
+                    shot_sound.play();
+                    shot_sound.setVolume(2);
                     shoot_botton = true;
                     if (shot_c >= shots_nbr) shot_c = 0;
                     shots[shot_c] = pl.shoot();
-                    cout << "Bullet Shot" << endl;
+//                    cout << "Bullet Shot" << endl;
                     ++shot_c;
                 }
             }
