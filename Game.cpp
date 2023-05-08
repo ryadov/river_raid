@@ -7,15 +7,49 @@
 
 void init_objects() {
     // Player init
-    pl.setPos(PLAYER_INIT_X,PLAYER_INIT_Y-500);  //change depending on frame size or spawning window
-
+    pl.setPos(PLAYER_INIT_X,PLAYER_INIT_Y);  //change depending on frame size or spawning window
     // Greenery init
-//    Tile right_lane()
+    right_lane.setShape(land_right);
+
+    right_lane2.setShape(land_right);
+    right_lane2.move(0,-right_lane2.getHeight());
+
+    left_lane.setShape(land_left);
+
+    left_lane2.setShape(land_left);
+    left_lane2.move(0,-left_lane2.getHeight());
+
+    //roads init
+    road_tl.setShape(road_topLeft);
+
+    road_bl.setShape(road_bottomLeft);
+    road_bl.move(0,-road_bl.getHeight()+1);
+
+    road_tr.setShape(road_topRight);
+
+    road_br.setShape(road_bottomRight);
+    road_br.move(0,-road_br.getHeight()+1);
+
+    //corners init
+    corner_tl.setShape(corner_top_l);
+
+    corner_bl.setShape(corner_bottom_l);
+    corner_bl.move(0,-2*road_bl.getHeight()+1);
+
+    corner_tr.setShape(corner_top_r);
+
+    corner_br.setShape(corner_bottom_r);
+    corner_br.move(0,-2*road_br.getHeight()+1);
+
+
+
+
+
     // enemy initilization
     // Enemy enemys[enemy_nbr] {};
     for(int i{0} ; i < enemy_nbr;i++){
         //choose random enemy shape which are given the values between 5 to 9
-        Enemy::e_Enemy enm = static_cast<Enemy::e_Enemy>(rand()%5+5);
+        Enemy::e_Enemy enm = static_cast<Enemy::e_Enemy>(rand()%4 + 5);
         float x;
         enemys[i] = Enemy(enm);
 
@@ -83,21 +117,46 @@ void move_objects_down() {
     for (int i{0}; i < fuel_nbr ; i++){
         fuels[i].move_d(pl.getSpeed());
     }
+    right_lane.move_d(pl.getSpeed());
+    right_lane2.move_d(pl.getSpeed());
+    left_lane.move_d(pl.getSpeed());
+    left_lane2.move_d(pl.getSpeed());
+
+    road_tl.move_d(pl.getSpeed());
+    road_tr.move_d(pl.getSpeed());
+    road_bl.move_d(pl.getSpeed());
+    road_br.move_d(pl.getSpeed());
+
+    corner_tl.move_d(pl.getSpeed());
+    corner_tr.move_d(pl.getSpeed());
+    corner_bl.move_d(pl.getSpeed());
+    corner_br.move_d(pl.getSpeed());
     board.change_fuel(-0.1);
 }
 
 void kill_objects() {
-    for (int i{0}; i < enemy_nbr ; i++) {
-        if (enemys[i].getState() == explode || enemys[i].getState() == killed || enemys[i].getState() == deleted ){
-            continue;
-        }
-        if (pl.isColliding(enemys[i])) {
-            pl.kill(pick_exp(exp1));
-            enemys[i].kill(pick_exp(exp1));
-            board.update_lifes(-1);
-            reset = true ;
-        }
+    if (pl.isColliding(right_lane) || pl.isColliding(right_lane2) || pl.isColliding(left_lane) || pl.isColliding(left_lane2)) {
+        pl.kill(pick_exp(exp1));
+        board.update_lifes(-1);
+        reset = true ;
     }
+
+    if(pl.isColliding(road_tl)||pl.isColliding(road_tr)||pl.isColliding(road_bl)||pl.isColliding(road_br)){
+        pl.kill(pick_exp(exp1));
+        board.update_lifes(-1);
+        reset = true ;
+    }
+//    for (int i{0}; i < enemy_nbr ; i++) {
+//        if (enemys[i].getState() == explode || enemys[i].getState() == killed || enemys[i].getState() == deleted ){
+//            continue;
+//        }
+//        if (pl.isColliding(enemys[i])) {
+//            pl.kill(pick_exp(exp1));
+//            enemys[i].kill(pick_exp(exp1));
+//            board.update_lifes(-1);
+//            reset = true ;
+//        }
+//    }
     for (int i{0}; i < enemy_nbr ; i++) {
         if (enemys[i].getState() == explode || enemys[i].getState() == killed  || enemys[i].getState() == deleted){
             continue;
@@ -186,11 +245,28 @@ void kill_objects_outsideFrame(){
     }
 }
 
+void updateTiles(){
+    right_lane.updatePosition();
+    right_lane2.updatePosition();
+    left_lane.updatePosition();
+    left_lane2.updatePosition();
+
+    road_tl.updatePosition();
+    road_tr.updatePosition();
+    road_bl.updatePosition();
+    road_br.updatePosition();
+
+    corner_tl.updatePosition();
+    corner_tr.updatePosition();
+    corner_bl.updatePosition();
+    corner_br.updatePosition();
+}
+
 void respawn_objects(){
     for (int i{0}; i < enemy_nbr; i++) {
         if (enemys[i].getState() == deleted) {
-            //choose random enemy shape which are given the values between 5 to 9
-            Enemy::e_Enemy enm = static_cast<Enemy::e_Enemy>(rand()%5+5);
+            //choose random enemy shape which are given the values between 5 to 8
+            Enemy::e_Enemy enm = static_cast<Enemy::e_Enemy>(rand()%4 + 5);
             float x;
             enemys[i] = Enemy(enm);
             if(enm == Enemy::plane)
@@ -232,19 +308,36 @@ void respawn_objects(){
 
 
 void draw_scene(){
+    window.draw(right_lane.draw());
+    window.draw(right_lane2.draw());
+    window.draw(left_lane.draw());
+    window.draw(left_lane2.draw());
+
+    window.draw(road_tl.draw());
+    window.draw(road_tr.draw());
+    window.draw(road_bl.draw());
+    window.draw(road_br.draw());
+
+    window.draw(corner_tl.draw());
+    window.draw(corner_tr.draw());
+    window.draw(corner_bl.draw());
+    window.draw(corner_br.draw());
+
     window.draw(pl.draw());
 
 
-    for (int i{0}; i < enemy_nbr ; i++){
+    for (int i{0}; i < enemy_nbr ; i++) {
         window.draw(enemys[i].draw());
     }
+
     for (int i{0}; i < shots_nbr ; i++){
         window.draw(shots[i].draw());
     }
     for (int i{0}; i < fuel_nbr ; i++){
         window.draw(fuels[i].draw());
     }
-    window.draw(right_lane.draw());
+
+
     window.draw(board.draw());
 }
 
@@ -258,8 +351,9 @@ void refuel_player() {
 
 void reset_game(){
     bool old {reset};
-    while(reset) {
 
+    while(reset) {
+        pl.setSpeed(0);
         Text text;
         text.setFont(displayFont);
         if(board.get_lifes()) {
@@ -275,12 +369,14 @@ void reset_game(){
                 break;
             }
         }
-        text.setCharacterSize(FONT_SIZE); // set the character size in pixels
+        text.setCharacterSize(FONT_SIZE*(WIN_H/WIN_W/1.5f)); // set the character size in pixels
         text.setFillColor(Color::Yellow); // set the color
         text.setPosition((WIN_W-text.getLocalBounds().width)/2,WIN_H/2);
 
-        window.clear(Color::Transparent);
+        window.clear(Color::Blue);
+        draw_scene();
         window.draw(text);
+
         window.display();
     }
     if(reset != old ){
