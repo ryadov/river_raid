@@ -6,9 +6,6 @@
 using namespace std;
 using namespace sf;
 Sprite  pick_shape (Shapes shape) {
-    Sprite spt_land;
-    spt_land.setTexture(texture_land);
-
     Sprite spt;
     spt.setTexture(texture);
     switch (shape) {
@@ -54,20 +51,18 @@ Sprite  pick_shape (Shapes shape) {
         case land_2 :
             spt.setTextureRect(IntRect(117,15,31,24));
             break ;
-        case land_right:
-            spt_land.setTexture(texture_land);
+
+        case corner_bottom_l :
+            spt.setTextureRect(IntRect(117,6,32,8));
             break;
-        case corner_top_r :
-            spt.setTextureRect(IntRect(117,6,31,8));
+        case  corner_bottom_r:
+            spt.setTextureRect(IntRect(84,6,32,8));
             break;
         case corner_top_l :
-            spt.setTextureRect(IntRect(84,6,31,8));
+            spt.setTextureRect(IntRect(117,40,32,8));
             break;
-        case corner_bottom_r :
-            spt.setTextureRect(IntRect(117,40,31,8));
-            break;
-        case corner_bottom_l :
-            spt.setTextureRect(IntRect(84,40,31,8));
+        case corner_top_r :
+            spt.setTextureRect(IntRect(84,40,32,8));
             break;
 
 
@@ -80,9 +75,23 @@ Sprite  pick_shape (Shapes shape) {
         case label :
             spt.setTextureRect(IntRect(88,84,64,7));
             break;
-
-
+        case land_right:
+            spt.setTextureRect(IntRect(150,146,88,941));
+            break;
         case land_left:
+            spt.setTextureRect(IntRect(0,146,72,941));
+            break;
+        case road_topLeft:
+            spt.setTextureRect(IntRect(0,1100,112,50));
+            break;
+        case road_topRight:
+            spt.setTextureRect(IntRect(117,1100,128,50));
+            break;
+        case road_bottomLeft:
+            spt.setTextureRect(IntRect(0,1156,112,58));
+            break;
+        case road_bottomRight:
+            spt.setTextureRect(IntRect(117,1156,128,58));
             break;
         case exp1:
             break;
@@ -114,6 +123,7 @@ Sprite  pick_shape (Shapes shape) {
             break;
         case s9:
             break;
+
     }
     return spt ;
 }
@@ -383,4 +393,16 @@ int setScore(Shapes shape) {
             break;
     }
     return score;
+}
+
+Sprite pick_land(Shapes shape){
+    Sprite spt_land;
+//    spt_land.setTexture(texture_land);
+
+    switch (shape) {
+        case land_right:
+            spt_land.setTexture(texture_land);
+            break;
+    }
+    return spt_land;
 }

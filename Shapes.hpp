@@ -28,6 +28,10 @@ enum Shapes {
     plane,
 
     // objects
+    road_topLeft,
+    road_topRight,
+    road_bottomLeft,
+    road_bottomRight,
     bridge,
     fuel,
 
@@ -72,6 +76,8 @@ enum Shapes {
 Sprite  pick_shape (Shapes shape) ;
 
 Sprite  pick_score (Shapes shape) ;
+
+Sprite pick_land ( Shapes shape) ;
 
 Sprite  pick_exp (Shapes shape) ;
 
