@@ -1,7 +1,3 @@
-//
-// Created by REM005 on 5/5/2023.
-//
-
 #include "Scoreboard.hpp"
 #include "Game.hpp"
 
@@ -49,7 +45,6 @@ void Scoreboard::change_fuel( float amount){
     fuel_amount += amount ;
     mark_pose += amount ;
     fuel_mark.setPosition(mark_pose , fuel_mark.getPosition().y) ;
-    //cout << fuel_amount << "/" << max_fuel << endl ;
 }
 
 bool Scoreboard::check_fuel() {

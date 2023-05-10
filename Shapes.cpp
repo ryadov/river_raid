@@ -394,15 +394,3 @@ int setScore(Shapes shape) {
     }
     return score;
 }
-
-Sprite pick_land(Shapes shape){
-    Sprite spt_land;
-//    spt_land.setTexture(texture_land);
-
-    switch (shape) {
-        case land_right:
-            spt_land.setTexture(texture_land);
-            break;
-    }
-    return spt_land;
-}
